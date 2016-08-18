@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import WaitingPage from './WaitingPage'
-import Question from './Question'
+import QuestionText from './QuestionText'
+import QuestionAnswers from './QuestionAnswers'
 
 const mapStateToProps = ({}) => ({
 })
 
-class App extends Component {
+class Question extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {}
@@ -17,13 +17,11 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <WaitingPage />
-        <Question />
-      </div>
-    )
+    return <div>
+      <QuestionText />
+      <QuestionAnswers />
+    </div>
   }
 }
 
-export default connect()(App)
+export default connect()(Question)

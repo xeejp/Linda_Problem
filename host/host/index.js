@@ -5,9 +5,9 @@ import { Provider } from 'react-redux'
 import createLogger from 'redux-logger'
 import createSagaMiddleware from 'redux-saga'
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import injectTapEventPlugin from 'react-tap-event-plugin'
+import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import App from './App.js'
@@ -33,7 +33,7 @@ _experiment.onReceiveMessage(({ action }) => {
   store.dispatch(action)
 })
 
-function sendData(action, params=null) {
+function sendData(action, params) {
   _experiment.send_data({ action, params });
 }
 
