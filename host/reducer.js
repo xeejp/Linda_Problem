@@ -21,6 +21,16 @@ function reducer(state = initialState, action) {
         page: action.page,
       })
 
+    case "FETCH_CONTENTS":
+      console.log("FETCH_CONTENTS")
+      return Object.assign({}, state, {
+        page: action.page,
+        users: action.users,
+        ans_programmer: action.ans_programmer,
+        ans_banker: action.ans_banker,
+        ans_each: action.ans_each,
+      })
+
     default:
       return state
   }

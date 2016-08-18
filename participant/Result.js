@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import Question from './Question'
+import { fetchContents } from './actions'
 
-const mapStateToProps = ({}) => ({
+const mapStateToProps = ({page}) => ({
 })
 
-class Pages extends Component {
+class Result extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {}
@@ -16,12 +16,13 @@ class Pages extends Component {
   }
 
   render() {
+    const { page } = this.props
     return (
       <div>
-        <Question />
+        <p>実験は終了です</p>
       </div>
     )
   }
 }
 
-export default connect()(Pages)
+export default connect(mapStateToProps)(Result)

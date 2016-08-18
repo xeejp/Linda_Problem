@@ -6,7 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress'
 const mapStateToProps = ({}) => ({
 })
 
-class WaitingPage extends Component {
+class Waiting extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {}
@@ -28,4 +28,4 @@ class WaitingPage extends Component {
   }
 }
 
-export default connect()(WaitingPage)
+export default connect()(Waiting)

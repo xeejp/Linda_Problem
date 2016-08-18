@@ -24,7 +24,7 @@ defmodule LindaProblem do
 
   def new_participant() do
     %{
-      answer: nil,
+      status: nil,
     }
   end
 
@@ -45,20 +45,43 @@ defmodule LindaProblem do
     end
   end
 
-  def handle_received(data, %{"action" => action, "params" => params}) do
-    Logger.debug "received"
-    type = case {action, params} do
-      {"fetch contects", _} -> %{type: "FETCH_CONTENTS"}
-      {"change page", _} ->
-        Logger.debug "change page"
-        data = %{data | page: params}
-        %{type: "CHANGE_PAGE"}
-      _ -> %{}
-    end
-    {:ok, %{"data" => data, "host" => %{action: Map.merge(type, data)}}}
+  def handle_received(data, %{"action" => "fetch contents", "params" => params}) do
+    action = Map.merge(%{type: "FETCH_CONTENTS"}, data)
+    {:ok, %{"data" => data, "host" => %{action: action}}}
+  end
+
+  def handle_received(data, %{"action" => "change page", "params" => params}) do
+    data = %{data | page: params}
+    action = %{
+      type: "CHANGE_PAGE",
+      page: data.page,
+    }
+    participants = dispatch_to_all(data.participants, action)
+    {:ok, %{"data" => data, "host" => %{action: action}, "participant" => participants}}
+  end
+
+  def handle_received(data, %{"action" => "fetch contents"}, id) do
+     action = %{
+       type: "FETCH_CONTENTS",
+       page: data.page,
+       status: data.participants[id].status,
+     }
+     {:ok, %{"data" => data, "participant" => %{id => %{action: action}}}}
+  end
+
+  def handle_received(data, %{"action" => "submit answer", "params" => params}, id) do
+    data = put_in(data.participants[id].status, params)
+    action = %{
+      type: "SUBMIT_ANSWER",
+      status: data.participants[id].status,
+    }
+    {:ok, %{"data" => data, "participant" => %{id => %{action: action}}}}
   end
 
   def handle_received(data, _action, _id) do
     {:ok, %{"data" => data}}
   end
+
+  def dispatch_to_all(participants, action) , do: Enum.map(participants, fn {id, _} ->
+    {id, %{action: action}} end) |> Enum.into(%{})
 end

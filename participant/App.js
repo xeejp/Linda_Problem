@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import WaitingPage from './WaitingPage'
-import Question from './Question'
+import { fetchContents } from './actions'
 
-const mapStateToProps = ({}) => ({
+import Waiting from './Waiting'
+import Question from './Question'
+import Result from './Result'
+
+const mapStateToProps = ({page}) => ({
+  page
 })
 
 class App extends Component {
@@ -14,16 +18,20 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(fetchContents())
   }
 
   render() {
+    const { page } = this.props
     return (
       <div>
-        <WaitingPage />
-        <Question />
+        { (page == "waiting") ? <Waiting /> : null }
+        { (page == "experiment") ? <Question /> : null }
+        { (page == "result") ? <Result /> : null }
       </div>
     )
   }
 }
 
-export default connect()(App)
+export default connect(mapStateToProps)(App)
