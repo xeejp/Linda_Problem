@@ -19,16 +19,20 @@ function reducer(state = initialState, action) {
       console.log("CHANGE_PAGE")
       return Object.assign({}, state, {
         page: action.page,
+        users: action.users,
       })
 
     case "FETCH_CONTENTS":
       console.log("FETCH_CONTENTS")
       return Object.assign({}, state, {
         page: action.page,
+        users: action.participants,
+      })
+
+    case "SUBMIT_ANSWER":
+      console.log("ok")
+      return Object.assign({}, state, {
         users: action.users,
-        ans_programmer: action.ans_programmer,
-        ans_banker: action.ans_banker,
-        ans_each: action.ans_each,
       })
 
     default:

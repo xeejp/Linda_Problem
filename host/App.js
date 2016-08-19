@@ -4,6 +4,10 @@ import { connect } from 'react-redux'
 import { fetchContents } from './actions'
 
 import PageStepper from './PageStepper'
+import Users from './Users'
+import Participants from './Participants'
+
+import Chart from './Chart'
 
 const mapStateToProps = ({}) => ({
 })
@@ -23,6 +27,9 @@ class App extends Component {
     return (
       <div>
         <PageStepper />
+        <Participants />
+        <Chart />
+        <Users />
       </div>
     )
   }

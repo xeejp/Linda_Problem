@@ -11,6 +11,7 @@ function reducer(state = {}, action) {
       console.log("changed")
       return Object.assign({}, state, {
         page: action.page,
+        status: action.status,
       })
 
     case "SUBMIT_ANSWER":

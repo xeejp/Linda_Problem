@@ -5,7 +5,7 @@ const mapStateToProps = ({users}) => ({
   users,
 })
 
-class Participant extends Component {
+class Participants extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {}
@@ -21,4 +21,4 @@ class Participant extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Participant)
+export default connect(mapStateToProps)(Participants)

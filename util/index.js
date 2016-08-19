@@ -10,3 +10,20 @@ export function getPage(page) {
       return page
   }
 }
+
+export function getStatus(status) {
+  switch(status) {
+    case 'programmer':
+      return 'プログラマ'
+    case 'banker':
+      return '銀行員'
+    case 'each':
+      return 'プログラマで環境保護活動家'
+    case 'noactive':
+      return '未参加'
+    case null:
+      return '未選択'
+    default:
+      return status
+  } 
+}
