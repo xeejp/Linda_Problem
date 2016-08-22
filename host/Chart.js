@@ -44,6 +44,7 @@ class App extends Component {
           },
           yAxis: {
             min: 0,
+            allowDecimals: false,
             title: {
               text: '人数'
             }

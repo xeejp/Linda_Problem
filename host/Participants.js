@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({users}) => ({
+const mapStateToProps = ({users, page, ans_programmer, ans_banker, ans_each, join_experiment}) => ({
   users,
+    page,
+    ans_programmer, 
+    ans_banker, 
+    ans_each, 
+    join_experiment
 })
 
 class Participants extends Component {
@@ -12,10 +17,23 @@ class Participants extends Component {
   }
 
   render() {
-    const {users} = this.props
+    const {
+      users,
+      page,
+      ans_programmer, 
+      ans_banker, 
+      ans_each, 
+      join_experiment
+    } = this.props
     return (
       <div>
-        <p>現在{Object.keys(users).length}人参加しています。</p>
+        {
+          page == "waiting"
+          ? <p>現在{Object.keys(users).length}人参加しています。</p>
+          : page == "experiment"
+          ? <p>現在{join_experiment}人中{ans_programmer+ans_banker+ans_each}が回答を済ませました</p>
+          : null
+        }
       </div>
     )
   }

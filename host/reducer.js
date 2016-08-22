@@ -4,6 +4,7 @@ const initialState = {
   ans_programmer: 0,
   ans_banker: 0,
   ans_each: 0,
+  join_experiment: 0,
 }
 
 function reducer(state = initialState, action) {
@@ -20,6 +21,10 @@ function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         page: action.page,
         users: action.users,
+        ans_programmer: action.ans_programmer,
+        ans_banker: action.ans_banker,
+        ans_each: action.ans_each,
+        join_experiment: action.join_experiment,
       })
 
     case "FETCH_CONTENTS":
@@ -27,12 +32,20 @@ function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         page: action.page,
         users: action.participants,
+        ans_programmer: action.ans_programmer,
+        ans_banker: action.ans_banker,
+        ans_each: action.ans_each,
+        join_experiment: action.join_experiment,
       })
 
     case "SUBMIT_ANSWER":
       console.log("ok")
       return Object.assign({}, state, {
         users: action.users,
+        ans_programmer: action.ans_programmer,
+        ans_banker: action.ans_banker,
+        ans_each: action.ans_each,
+        join_experiment: action.join_experiment,
       })
 
     default:

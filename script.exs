@@ -16,6 +16,7 @@ defmodule LindaProblem do
        page: "waiting",
        participants: %{},
        answer_log: [],
+       join_experiment: 0,
        ans_programmer: 0,
        ans_banker: 0,
        ans_each: 0,
@@ -59,20 +60,31 @@ defmodule LindaProblem do
   def handle_received(data, %{"action" => "change page", "params" => params}) do
     data = %{data | page: params}
     if data.page == "waiting" do
+      data = Map.put(data, :ans_programmer, 0) |> Map.put(:ans_banker, 0) |> Map.put(:ans_each, 0)
+      data = Map.put(data, :join_experiment, Map.size(data.participants))
       participants = Enum.map(data.participants, fn {id, _} ->
         {id, new_participant(data.page)} end) |> Enum.into(%{})
+      data = %{data | join_experiment: data.join_experiment}
       data = %{data | participants: participants}
     end
     host_action = %{
       type: "CHANGE_PAGE",
       page: data.page,
       users: data.participants,
+      ans_programmer: data.ans_programmer,
+      ans_banker: data.ans_banker,
+      ans_each: data.ans_each,
+      join_experiment: data.join_experiment,
     }
     participant_action = Enum.map(data.participants, fn {id, _} ->
       {id, %{action: %{
         type: "CHANGE_PAGE",
         page: data.page,
         status: data.participants[id].status,
+        ans_programmer: data.ans_programmer,
+        ans_banker: data.ans_banker,
+        ans_each: data.ans_each,
+        join_experiment: data.join_experiment,
       }}} end) |> Enum.into(%{})
     {:ok, %{"data" => data, "host" => %{action: host_action}, "participant" => participant_action}}
   end
@@ -82,19 +94,37 @@ defmodule LindaProblem do
        type: "FETCH_CONTENTS",
        page: data.page,
        status: data.participants[id].status,
+        ans_programmer: data.ans_programmer,
+        ans_banker: data.ans_banker,
+        ans_each: data.ans_each,
+        join_experiment: data.join_experiment,
      }
      {:ok, %{"data" => data, "participant" => %{id => %{action: action}}}}
   end
 
   def handle_received(data, %{"action" => "submit answer", "params" => params}, id) do
     data = put_in(data.participants[id].status, params)
+    data = case params do
+      "programmer" -> Map.put(data, :ans_programmer, data.ans_programmer + 1)
+      "banker" -> Map.put(data, :ans_banker, data.ans_banker + 1)
+      "each" -> Map.put(data, :ans_each, data.ans_each + 1)
+      _ -> nil
+    end
     host_action = %{
       type: "SUBMIT_ANSWER",
       users: data.participants,
+      ans_programmer: data.ans_programmer,
+      ans_banker: data.ans_banker,
+      ans_each: data.ans_each,
+      join_experiment: data.join_experiment,
     }
     participant_action = %{
       type: "SUBMIT_ANSWER",
       status: data.participants[id].status,
+      ans_programmer: data.ans_programmer,
+      ans_banker: data.ans_banker,
+      ans_each: data.ans_each,
+      join_experiment: data.join_experiment,
     }
     {:ok, %{"data" => data, "host" => %{action: host_action}, "participant" => %{id => %{action: participant_action}}}}
   end
