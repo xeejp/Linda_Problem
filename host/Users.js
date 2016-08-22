@@ -43,7 +43,7 @@ const Users = ({ users }) => (
                 status={users[id].status}
                 />
                 : null
-            ))
+            )).reverse()
           }
         </tbody>
       </table>

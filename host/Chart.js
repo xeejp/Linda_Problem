@@ -3,17 +3,38 @@ import { connect } from 'react-redux'
 
 import Highcharts from 'react-highcharts'
 
-const mapStateToProps = ({}) => ({
+const mapStateToProps = ({users}) => ({
+  users,
 })
 
 class App extends Component {
   render() {
+    const { users } = this.props
+    var ans_programmer, ans_banker, ans_each
+    ans_programmer = ans_banker = ans_each = 0
+
+    for (let id of Object.keys(users)) {
+      switch (users[id].status) {
+        case "programmer":
+          ans_programmer++
+          break
+        case "banker":
+          ans_banker++
+          break
+        case "each":
+          ans_each++
+          break
+        default:
+          break
+      }
+    }
+
     return (
       <Highcharts 
         config={{
           chart: {
             type: 'column',
-            inverted: 
+            inverted: false
           },
           title: {
             text: '実験結果'
@@ -36,9 +57,9 @@ class App extends Component {
           series: [{
             name: '人数',
             data: [
-              ['プログラマ', 23],
-              ['銀行員', 16],
-              ['プログラマで環境保護活動家', 14]
+              ['プログラマ', ans_programmer],
+              ['銀行員', ans_banker],
+              ['プログラマで環境保護活動家', ans_each]
             ],
             dataLabels: {
               enabled: true,
