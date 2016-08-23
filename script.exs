@@ -23,8 +23,8 @@ defmodule LindaProblem do
      }}}
   end
 
-  def new_participant(page) do
-    if page == "waiting" do
+  def new_participant(isactive) do
+    if isactive do
       %{
         status: nil,
       }
@@ -38,7 +38,11 @@ defmodule LindaProblem do
   def join(%{participants: participants} = data, id) do
     Logger.debug "Joined"
     if not Map.has_key?(participants, id) do
-      participant = new_participant(data.page)
+      participant = if data.page == "experiment" do
+        new_participant(false)
+      else
+        new_participant(true)
+      end
       participants = Map.put(participants, id, participant)
       data = %{data | participants: participants}
       action = %{
@@ -59,12 +63,11 @@ defmodule LindaProblem do
 
   def handle_received(data, %{"action" => "change page", "params" => params}) do
     data = %{data | page: params}
-    if data.page == "waiting" do
-      data = Map.put(data, :ans_programmer, 0) |> Map.put(:ans_banker, 0) |> Map.put(:ans_each, 0)
+    unless data.page == "result" do
       data = Map.put(data, :join_experiment, Map.size(data.participants))
+      data = Map.put(data, :ans_programmer, 0) |> Map.put(:ans_banker, 0) |> Map.put(:ans_each, 0)
       participants = Enum.map(data.participants, fn {id, _} ->
-        {id, new_participant(data.page)} end) |> Enum.into(%{})
-      data = %{data | join_experiment: data.join_experiment}
+        {id, new_participant(true)} end) |> Enum.into(%{})
       data = %{data | participants: participants}
     end
     host_action = %{

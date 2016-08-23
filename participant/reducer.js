@@ -5,6 +5,10 @@ function reducer(state = {}, action) {
       return Object.assign({}, state, {
         page: action.page,
         status: action.status,
+        ans_programmer: action.ans_programmer,
+        ans_banker: action.ans_banker,
+        ans_each: action.ans_each,
+        join_experiment: action.join_experiment,
       })
 
     case "CHANGE_PAGE":
@@ -12,12 +16,20 @@ function reducer(state = {}, action) {
       return Object.assign({}, state, {
         page: action.page,
         status: action.status,
+        ans_programmer: action.ans_programmer,
+        ans_banker: action.ans_banker,
+        ans_each: action.ans_each,
+        join_experiment: action.join_experiment,
       })
 
     case "SUBMIT_ANSWER":
       console.log("answer")
       return Object.assign({}, state, {
         status: action.status,
+        ans_programmer: action.ans_programmer,
+        ans_banker: action.ans_banker,
+        ans_each: action.ans_each,
+        join_experiment: action.join_experiment,
       })
 
     default:

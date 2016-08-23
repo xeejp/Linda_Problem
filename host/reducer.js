@@ -17,7 +17,6 @@ function reducer(state = initialState, action) {
       })
 
     case "CHANGE_PAGE":
-      console.log("CHANGE_PAGE")
       return Object.assign({}, state, {
         page: action.page,
         users: action.users,

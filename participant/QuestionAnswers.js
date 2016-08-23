@@ -5,8 +5,12 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 import { submitAnswer } from './actions'
 
-const mapStateToProps = ({status}) => ({
+const mapStateToProps = ({status, ans_programmer, ans_banker, ans_each, join_experiment}) => ({
   status,
+  ans_programmer,
+  ans_banker,
+  ans_each,
+  join_experiment,
 })
 
 class QuestionAnswers extends Component {
@@ -28,7 +32,7 @@ class QuestionAnswers extends Component {
   }
 
   render() {
-    const { status } = this.props
+    const { status, ans_programmer, ans_banker, ans_each, join_experiment } = this.props
     return (
       <div>
         {status == null
@@ -47,7 +51,8 @@ class QuestionAnswers extends Component {
           status != null
           ? <div>
             <RaisedButton label="送信" primary={true} disabled={true} onClick={this.handleClick.bind(this)} />
-            <p>残り{}名です。</p>
+            <p>残り{join_experiment - ans_programmer - ans_banker - ans_each}名です。</p>
+            <p>しばらくお待ちください</p>
           </div>
           : this.state.value != null || status != null
             ? <div>

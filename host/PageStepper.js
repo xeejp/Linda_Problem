@@ -56,7 +56,7 @@ class PageStepper extends Component {
       )
     }
     return (
-      <div>
+      <div style={{marginBottom: "5%"}}>
         <Stepper activeStep={pages.indexOf(page)} linear={false}>
           {steps}
         </Stepper>

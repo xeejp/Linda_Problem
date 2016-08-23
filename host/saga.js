@@ -5,7 +5,7 @@ import { fetchContents, changePage } from './actions'
 function* changePageSaga() {
   while (true) {
     const { payload } = yield take(`${changePage}`)
-    console.log("sent")
+    console.log("change page")
     yield call(sendData, 'change page', payload)
   }
 }
@@ -13,7 +13,6 @@ function* changePageSaga() {
 function* fetchContentsSaga() {
   while (true) {
     yield take(`${fetchContents}`)
-    console.log("sent")
     yield call(sendData, 'fetch contents')
   }
 }

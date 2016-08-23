@@ -3,31 +3,15 @@ import { connect } from 'react-redux'
 
 import Highcharts from 'react-highcharts'
 
-const mapStateToProps = ({users}) => ({
-  users,
+const mapStateToProps = ({ans_programmer, ans_banker, ans_each}) => ({
+  ans_programmer,
+  ans_banker,
+  ans_each,
 })
 
 class App extends Component {
   render() {
     const { users } = this.props
-    var ans_programmer, ans_banker, ans_each
-    ans_programmer = ans_banker = ans_each = 0
-
-    for (let id of Object.keys(users)) {
-      switch (users[id].status) {
-        case "programmer":
-          ans_programmer++
-          break
-        case "banker":
-          ans_banker++
-          break
-        case "each":
-          ans_each++
-          break
-        default:
-          break
-      }
-    }
 
     return (
       <Highcharts 
