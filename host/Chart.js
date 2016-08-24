@@ -11,7 +11,7 @@ const mapStateToProps = ({ans_programmer, ans_banker, ans_each}) => ({
 
 class App extends Component {
   render() {
-    const { users } = this.props
+    const { ans_programmer, ans_banker, ans_each } = this.props
 
     return (
       <Highcharts 

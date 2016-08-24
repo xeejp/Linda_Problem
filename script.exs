@@ -37,7 +37,7 @@ defmodule LindaProblem do
 
   def join(%{participants: participants} = data, id) do
     Logger.debug "Joined"
-    if not Map.has_key?(participants, id) do
+    unless Map.has_key?(participants, id) do
       participant = if data.page == "experiment" do
         new_participant(false)
       else
@@ -50,6 +50,9 @@ defmodule LindaProblem do
         id: id,
         users: participants,
       }
+      unless data.page == "experiment" do
+        data = %{data | join_experiment: Map.size(participants)}
+      end
       {:ok, %{"data" => data, "host" => %{action: action}}}
     else
       {:ok, %{"data" => data}}
@@ -68,7 +71,7 @@ defmodule LindaProblem do
       data = Map.put(data, :ans_programmer, 0) |> Map.put(:ans_banker, 0) |> Map.put(:ans_each, 0)
       participants = Enum.map(data.participants, fn {id, _} ->
         {id, new_participant(true)} end) |> Enum.into(%{})
-      data = %{data | participants: participants}
+       data = %{data | participants: participants}
     end
     host_action = %{
       type: "CHANGE_PAGE",
@@ -81,28 +84,28 @@ defmodule LindaProblem do
     }
     participant_action = Enum.map(data.participants, fn {id, _} ->
       {id, %{action: %{
-        type: "CHANGE_PAGE",
-        page: data.page,
-        status: data.participants[id].status,
-        ans_programmer: data.ans_programmer,
-        ans_banker: data.ans_banker,
-        ans_each: data.ans_each,
-        join_experiment: data.join_experiment,
-      }}} end) |> Enum.into(%{})
-    {:ok, %{"data" => data, "host" => %{action: host_action}, "participant" => participant_action}}
+         type: "CHANGE_PAGE",
+         page: data.page,
+         status: data.participants[id].status,
+         ans_programmer: data.ans_programmer,
+         ans_banker: data.ans_banker,
+         ans_each: data.ans_each,
+         join_experiment: data.join_experiment,
+       }}} end) |> Enum.into(%{})
+     {:ok, %{"data" => data, "host" => %{action: host_action}, "participant" => participant_action}}
   end
 
   def handle_received(data, %{"action" => "fetch contents"}, id) do
-     action = %{
-       type: "FETCH_CONTENTS",
-       page: data.page,
-       status: data.participants[id].status,
-        ans_programmer: data.ans_programmer,
-        ans_banker: data.ans_banker,
-        ans_each: data.ans_each,
-        join_experiment: data.join_experiment,
-     }
-     {:ok, %{"data" => data, "participant" => %{id => %{action: action}}}}
+    action = %{
+      type: "FETCH_CONTENTS",
+      page: data.page,
+      status: data.participants[id].status,
+      ans_programmer: data.ans_programmer,
+      ans_banker: data.ans_banker,
+      ans_each: data.ans_each,
+      join_experiment: data.join_experiment,
+    }
+    {:ok, %{"data" => data, "participant" => %{id => %{action: action}}}}
   end
 
   def handle_received(data, %{"action" => "submit answer", "params" => params}, id) do
