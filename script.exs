@@ -45,15 +45,19 @@ defmodule LindaProblem do
       end
       participants = Map.put(participants, id, participant)
       data = %{data | participants: participants}
+      unless data.page == "experiment" do
+        data = %{data | join_experiment: Map.size(participants)}
+      end
       action = %{
         type: "ADD_USER",
         id: id,
         users: participants,
       }
-      unless data.page == "experiment" do
-        data = %{data | join_experiment: Map.size(participants)}
-      end
-      {:ok, %{"data" => data, "host" => %{action: action}}}
+      participant_action = %{
+        type: "ADD_USER",
+        join_experiment: data.join_experiment,
+      }
+      {:ok, %{"data" => data, "host" => %{action: action}, "participant" => dispatch_to_all(participants, participant_action)}}
     else
       {:ok, %{"data" => data}}
     end
@@ -124,15 +128,16 @@ defmodule LindaProblem do
       ans_each: data.ans_each,
       join_experiment: data.join_experiment,
     }
-    participant_action = %{
-      type: "SUBMIT_ANSWER",
-      status: data.participants[id].status,
-      ans_programmer: data.ans_programmer,
-      ans_banker: data.ans_banker,
-      ans_each: data.ans_each,
-      join_experiment: data.join_experiment,
-    }
-    {:ok, %{"data" => data, "host" => %{action: host_action}, "participant" => %{id => %{action: participant_action}}}}
+    participant_action = Enum.map(data.participants, fn {id, _} ->
+      {id, %{action: %{
+         type: "SUBMIT_ANSWER",
+         status: data.participants[id].status,
+         ans_programmer: data.ans_programmer,
+         ans_banker: data.ans_banker,
+         ans_each: data.ans_each,
+         join_experiment: data.join_experiment,
+       }}} end)
+    {:ok, %{"data" => data, "host" => %{action: host_action}, "participant" => participant_action}}
   end
 
   def handle_received(data, _action, _id) do

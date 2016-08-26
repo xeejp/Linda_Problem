@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import { fetchContents } from './actions'
 
+import Chart from './Chart'
+
 const mapStateToProps = ({page}) => ({
 })
 
@@ -19,7 +21,7 @@ class Result extends Component {
     const { page } = this.props
     return (
       <div>
-        <p>実験は終了です</p>
+        <Chart />
       </div>
     )
   }

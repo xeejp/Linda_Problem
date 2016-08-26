@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 import RaisedButton from 'material-ui/RaisedButton'
+import LinearProgress from 'material-ui/LinearProgress';
 
 import { submitAnswer } from './actions'
 
@@ -53,6 +54,7 @@ class QuestionAnswers extends Component {
             <RaisedButton label="送信" primary={true} disabled={true} onClick={this.handleClick.bind(this)} />
             <p>残り{join_experiment - ans_programmer - ans_banker - ans_each}名です。</p>
             <p>しばらくお待ちください</p>
+            <LinearProgress mode="determinate" max={join_experiment} value={ans_programmer+ans_banker+ans_each} />
           </div>
           : this.state.value != null || status != null
             ? <div>

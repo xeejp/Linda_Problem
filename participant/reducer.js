@@ -11,8 +11,12 @@ function reducer(state = {}, action) {
         join_experiment: action.join_experiment,
       })
 
+    case "ADD_USER":
+      return Object.assign({}, state, {
+        join_experiment: action.join_experiment,
+      })
+
     case "CHANGE_PAGE":
-      console.log("changed")
       return Object.assign({}, state, {
         page: action.page,
         status: action.status,
@@ -23,7 +27,6 @@ function reducer(state = {}, action) {
       })
 
     case "SUBMIT_ANSWER":
-      console.log("answer")
       return Object.assign({}, state, {
         status: action.status,
         ans_programmer: action.ans_programmer,

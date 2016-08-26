@@ -27,13 +27,17 @@ class App extends Component {
     const { page, status } = this.props
     return (
       <div>
-        { (status != "noactive")
+        { (status != "noactive" || page == "result")
           ? <div>
-            { (page == "waiting") ? <Waiting /> : null }
-            { (page == "experiment") ? <Question /> : null }
-            { (page == "result") ? <Result /> : null }
-          </div>
-          : <h1>遅えよボケ！</h1>
+              { (page == "waiting") ? <Waiting /> : null }
+              { (page == "experiment") ? <Question /> : null }
+              { (page == "result") ? <Result /> : null }
+            </div>
+          : <div>
+              <p>実験はすでに開始されています。</p>
+              <p>実験が終了するまでお待ちください。</p>
+            </div>
+          
         }
       </div>
     )
