@@ -6,6 +6,7 @@ import { fetchContents } from './actions'
 import PageStepper from './PageStepper'
 import Users from './Users'
 import Participants from './Participants'
+import EditQuestion from './EditQuestion'
 
 import Chart from './Chart'
 
@@ -28,8 +29,9 @@ class App extends Component {
       <div>
         <PageStepper />
         <Participants />
-        <Chart />
         <Users />
+        <Chart />
+        <EditQuestion />
       </div>
     )
   }

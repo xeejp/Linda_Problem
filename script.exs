@@ -2,20 +2,30 @@ defmodule LindaProblem do
   use Xee.ThemeScript
   require Logger
 
-  @page ["waiting", "experiment", "result"]
-
   # Callbacks
   def script_type do
     :message
   end
 
   def install, do: nil
-
+ 
   def init do
     {:ok, %{"data" => %{
        page: "waiting",
        participants: %{},
-       answer_log: [],
+       question: %{
+         text: "リンダは31歳です。独身です。\n社交的でとても陽気な性格です。彼女は哲学を専攻しました。\n学生時代には、差別や社会的正義について深い関心をもち、反原発運動にも参加していました。\n次の各項目の順序を、最もあり得るものを1番目に、最もあり得ないものを8番目に来るように並び替えてください。",
+         answers: [
+           "リンダは小学校の教師をしている",
+           "リンダは本屋で働いており、ヨガの教室に通っている",
+           "リンダはフェミニスト活動家である",
+           "リンダは精神病院で働いている",
+           "リンダは「女性有権者の会」の会員である",
+           "リンダは銀行の窓口係である",
+           "リンダは保険外交員である",
+           "リンダは銀行の窓口係で、フェミニスト活動家である",
+         ]
+       },
        join_experiment: 0,
        ans_programmer: 0,
        ans_banker: 0,
@@ -80,6 +90,7 @@ defmodule LindaProblem do
     host_action = %{
       type: "CHANGE_PAGE",
       page: data.page,
+      question: data.question,
       users: data.participants,
       ans_programmer: data.ans_programmer,
       ans_banker: data.ans_banker,
@@ -90,6 +101,7 @@ defmodule LindaProblem do
       {id, %{action: %{
          type: "CHANGE_PAGE",
          page: data.page,
+         question: data.question,
          status: data.participants[id].status,
          ans_programmer: data.ans_programmer,
          ans_banker: data.ans_banker,
@@ -103,6 +115,7 @@ defmodule LindaProblem do
     action = %{
       type: "FETCH_CONTENTS",
       page: data.page,
+      question: data.question,
       status: data.participants[id].status,
       ans_programmer: data.ans_programmer,
       ans_banker: data.ans_banker,

@@ -33,6 +33,9 @@ class App extends Component {
               text: '人数'
             }
           },
+          credits: {
+            enabled: false
+          },
           legend: {
             enabled: false
           },
