@@ -18,10 +18,10 @@ function* fetchContentsSaga() {
 }
 
 function* updateQuestionSaga() {
-    while(true) {
-          const { payload } = yield take(`${updateQuestion}`)
-          yield call(sendData, 'update question', payload)
-        }
+  while(true) {
+    const { payload } = yield take(`${updateQuestion}`)
+    yield call(sendData, 'update question', payload)
+  }
 }
 
 function* saga() {

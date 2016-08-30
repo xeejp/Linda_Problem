@@ -5,7 +5,10 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views'
 import IconButton from 'material-ui/IconButton'
 import ImageEdit from 'material-ui/svg-icons/image/edit'
+import ImageAdd from 'material-ui/svg-icons/content/add';
+import ImageDelete from 'material-ui/svg-icons/action/delete';
 import FlatButton from 'material-ui/RaisedButton'
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 
@@ -62,6 +65,11 @@ class EditQuestion extends Component {
     })
   }
 
+  deleteAnswer(index) {
+    console.log(index)
+    this.state.question.answers.splice(index, 1)
+  }
+
   submit() {
     const { dispatch } = this.props
     dispatch(updateQuestion(this.state.question))
@@ -76,6 +84,7 @@ class EditQuestion extends Component {
 
   render(){
     const { page, question } = this.props
+
     const actions = [
       <FlatButton
         label="適用"
@@ -107,28 +116,39 @@ class EditQuestion extends Component {
         <p>問題文</p>
         <TextField
           hintText={"問題の説明"}
-          defaultValue={this.state.question.text}
+          defaultValue={question.text}
           onBlur={this.handleChange.bind(this, ["text"])}
           multiLine={true}
           fullWidth={true}
         />
         <p>選択肢</p>
-        {
-          this.state.question.answers.map((answer, index) => (
-            <div>
-              <span width='50%'>
-                <TextField
-                  hintText={"選択肢"}
-                  defaultValue={answer}
-                  onBlur={this.handleChange.bind(this, ["answers", index])}
-                  multiLine={false}
-                  fullWidth={true}
-                />
-              </span>
-              <br />
-            </div>
-          ))
-        }
+        <table>
+          <tbody>
+            {
+              this.state.question.answers.map((answer, index) => (
+                <tr>
+                  <td>
+                    <FloatingActionButton mini={true} secondary={true} onTouchTap={this.deleteAnswer.bind(this, index)}>
+                      <ImageDelete />
+                    </FloatingActionButton>
+                  </td>
+                  <td>
+                    <TextField
+                      hintText={"選択肢"}
+                      defaultValue={answer}
+                      onBlur={this.handleChange.bind(this, ["answers", index])}
+                      multiLine={false}
+                      fullWidth={true}
+                    />
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <FloatingActionButton mini={true}>
+          <ImageAdd />
+        </FloatingActionButton>
       </Dialog>
     </div>)
   }

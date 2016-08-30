@@ -62,6 +62,11 @@ function reducer(state = initialState, action) {
         join_experiment: action.join_experiment,
       })
 
+    case "UPDATE_QUESTION":
+      return Object.assign({}, state, {
+        question: action.question,
+      })
+
     default:
       return state
   }

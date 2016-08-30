@@ -111,6 +111,16 @@ defmodule LindaProblem do
      {:ok, %{"data" => data, "host" => %{action: host_action}, "participant" => participant_action}}
   end
 
+  def handle_received(data, %{"action" => "update question", "params" => params}) do
+    data = %{data | question: params}
+    host_action = %{
+      type: "UPDATE_QUESTION",
+      question: data.question,
+    }
+
+    {:ok, %{"data" => data, "host" => %{action: host_action}}}
+  end
+
   def handle_received(data, %{"action" => "fetch contents"}, id) do
     action = %{
       type: "FETCH_CONTENTS",
