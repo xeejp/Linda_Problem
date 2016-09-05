@@ -45,7 +45,7 @@ class QuestionEditor extends Component {
     this.setState({ 
       isOpenDialog: true,
       question: this.props.question,
-    });
+    })
   }
 
   handleClose() {
